@@ -1,4 +1,4 @@
 export const environment = {
-  serverURL: 'http://localhost:4000', // TODO change this
+  serverURL: 'https://api.eecshelpdesk.tk',
   production: true
 };

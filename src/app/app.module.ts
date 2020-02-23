@@ -17,7 +17,7 @@ import {
   MatChipsModule,
   MatFormFieldModule,
   MatGridListModule,
-  MatInputModule,
+  MatInputModule, MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
 
@@ -42,7 +42,8 @@ const config: SocketIoConfig = { url: environment.serverURL, options: {} };
     MatInputModule,
     MatFormFieldModule,
     MatGridListModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

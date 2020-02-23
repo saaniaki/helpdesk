@@ -7,8 +7,8 @@ import {AuthService} from './auth.service';
   providedIn: 'root'
 })
 export class ChatService {
-  private matchedUser$ = new Subject<{username: string, socketID: string}>(); // TODO extract as a user with fname and lname
-  private canRequestToJoinQueue$ = new Subject<boolean>(); // TODO extract as a user with fname and lname
+  private matchedUser$ = new Subject<{username: string, socketID: string}>();
+  private canRequestToJoinQueue$ = new Subject<boolean>();
   public messages = [];
 
   constructor(private websocketService: WebsocketService, private authService: AuthService) {
@@ -20,7 +20,6 @@ export class ChatService {
     });
     this.websocketService.addListener('chatReceive', data => {
       this.messages.push(data);
-      console.log(this.messages);
     });
     this.websocketService.addListener('partyJoined', data => {
       this.matchedUser$.next(data);

@@ -2,7 +2,7 @@
   <mat-card-content>
 
     <div class="title">
-      <h1 *ngIf="userInConvo === null && !(chatService.canRequestToJoinQueue | async)">Please wait, you are in queue!</h1>
+      <h1 *ngIf="userInConvo === null && !(chatService.canRequestToJoinQueue | async)">Please wait {{authService.decodedJWT.firstName}}, you are in queue!</h1>
     </div>
 
     <div *ngIf="userInConvo === null && (chatService.canRequestToJoinQueue | async)">
@@ -16,13 +16,14 @@
 
     <div *ngIf="userInConvo !== null">
       <div class="title">
-        <h1 *ngIf="userInConvo !== null">Connected to {{userInConvo.username}}</h1>
+        <h1 *ngIf="userInConvo !== null">Connected to {{userInConvo.firstName}} {{userInConvo.lastName}}</h1>
+        <h3 *ngIf="userInConvo.isClient">Client ID: {{userInConvo.username}}</h3>
       </div>
 
       <div class="chat-history">
         <div>
           <mat-chip-list *ngFor="let data of chatService.messages" [ngClass]="{'is-me': data.isMe}">
-            <mat-chip [color]="data.isMe ? 'primary' : 'accent'" selected>{{data.message}}</mat-chip>
+            <mat-chip [color]="data.isMe ? 'primary' : 'accent'" selected>{{data.message}} <span>{{data.timestamp | date:'shortTime'}}</span></mat-chip>
           </mat-chip-list>
         </div>
       </div>

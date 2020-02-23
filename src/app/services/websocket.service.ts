@@ -52,11 +52,11 @@ export class WebsocketService {
   }
 
   private socketAuthenticated() {
-    console.log('websocket authenticated');
+    // console.log('websocket authenticated');
   }
 
   private socketUnauthorized(msg) {
-    console.log(`unauthorized: ${JSON.stringify(msg.data)}`);
+    // console.log(`unauthorized: ${JSON.stringify(msg.data)}`);
     throw new Error(msg.data.type);
   }
 

@@ -24,6 +24,13 @@ mat-chip.mat-accent {
   margin-left: 15px;
 }
 
+mat-chip span {
+  font-size: 8px;
+  margin: 0 3px;
+  padding-top: 18px;
+  opacity: 0.6;
+}
+
 ::ng-deep .is-me .mat-chip-list-wrapper {
   flex-direction: row-reverse;
 }
