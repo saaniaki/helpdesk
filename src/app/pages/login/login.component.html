@@ -1,0 +1,73 @@
+<mat-card>
+  <mat-card-content>
+    <div class="title">
+      <h1> Welcome to Help Desk 4481! </h1>
+    </div>
+
+    <mat-grid-list cols="2" rowHeight="300px">
+      <mat-grid-tile>
+        <div>
+          <div class="title">
+            <h2> Login as Client </h2>
+          </div>
+          <form [formGroup]="clientForm" (ngSubmit)="authService.loginAsClient(firstNameControl.value, lastNameControl.value)">
+            <mat-form-field class="full-width">
+              <mat-label>First Name</mat-label>
+              <input type="text" matInput [formControl]="firstNameControl" placeholder="John">
+              <mat-hint>Please enter your first name.</mat-hint>
+              <mat-error *ngIf="firstNameControl.hasError('required')">
+                First Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-label>Last Name</mat-label>
+              <input type="text" matInput [formControl]="lastNameControl" placeholder="Smith">
+              <mat-hint>Please enter your last name.</mat-hint>
+              <mat-error *ngIf="lastNameControl.hasError('required')">
+                Last Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <button type="submit" mat-button mat-raised-button color="primary" [disabled]="!clientForm.valid">Login as Client</button>
+          </form>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div>
+          <div class="title">
+            <h2> Login as Help Desk </h2>
+          </div>
+          <form [formGroup]="helperForm" (ngSubmit)="authService.loginAsHelper(usernameControl.value, passwordControl.value)">
+            <mat-form-field class="full-width">
+              <mat-label>Username</mat-label>
+              <input type="text" matInput [formControl]="usernameControl">
+              <mat-hint>Please enter your Username.</mat-hint>
+              <mat-error *ngIf="usernameControl.hasError('required')">
+                Username is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-label>Password</mat-label>
+              <input type="password" matInput [formControl]="passwordControl">
+              <mat-hint>Please enter your Password.</mat-hint>
+              <mat-error *ngIf="passwordControl.hasError('required')">
+                Password is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <button type="submit" mat-button mat-raised-button color="primary" [disabled]="!helperForm.valid">Login as Help Desk</button>
+          </form>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+
+
+
+
+
+
+
+
+  </mat-card-content>
+</mat-card>
+
+

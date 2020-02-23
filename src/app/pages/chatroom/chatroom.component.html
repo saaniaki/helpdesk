@@ -1,0 +1,42 @@
+<mat-card>
+  <mat-card-content>
+
+    <div class="title">
+      <h1 *ngIf="userInConvo === null && !(chatService.canRequestToJoinQueue | async)">Please wait, you are in queue!</h1>
+    </div>
+
+    <div *ngIf="userInConvo === null && (chatService.canRequestToJoinQueue | async)">
+      <div class="title">
+        <h1>Your party has left the chat, you can join the queue again if you wish!</h1>
+      </div>
+      <div class="action-container">
+        <button (click)="chatService.joinQueue()" mat-button mat-raised-button color="primary">Join Queue</button>
+      </div>
+    </div>
+
+    <div *ngIf="userInConvo !== null">
+      <div class="title">
+        <h1 *ngIf="userInConvo !== null">Connected to {{userInConvo.username}}</h1>
+      </div>
+
+      <div class="chat-history">
+        <div>
+          <mat-chip-list *ngFor="let data of chatService.messages" [ngClass]="{'is-me': data.isMe}">
+            <mat-chip [color]="data.isMe ? 'primary' : 'accent'" selected>{{data.message}}</mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
+
+      <mat-form-field>
+        <mat-label>Message</mat-label>
+        <input matInput placeholder="Start typing..." [formControl]="messageControl"
+               (keyup.enter)="chatService.send(messageControl.value); messageControl.reset()">
+      </mat-form-field>
+
+      <div class="action-container">
+        <button (click)="chatService.send(messageControl.value)" mat-button mat-raised-button color="primary">Send</button>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,43 @@
+mat-card {
+  margin: 20px;
+}
+
+.title {
+  text-align: center;
+}
+
+.chat-history {
+  height: 50vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-flow: column;
+  flex-direction: column-reverse;
+  margin-bottom: 15px;
+}
+
+mat-chip.mat-primary {
+  margin-right: 15px;
+}
+
+mat-chip.mat-accent {
+  margin-left: 15px;
+}
+
+::ng-deep .is-me .mat-chip-list-wrapper {
+  flex-direction: row-reverse;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.action-container {
+  text-align: center;
+
+  button {
+    width: 150px;
+  }
+}
+
+
