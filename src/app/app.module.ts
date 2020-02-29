@@ -20,6 +20,7 @@ import {
   MatInputModule, MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
+import { WaitingRoomComponent } from './pages/waiting-room/waiting-room.component';
 
 const config: SocketIoConfig = { url: environment.serverURL, options: {} };
 
@@ -28,6 +29,7 @@ const config: SocketIoConfig = { url: environment.serverURL, options: {} };
     AppComponent,
     LoginComponent,
     ChatroomComponent,
+    WaitingRoomComponent,
   ],
   imports: [
     BrowserModule,

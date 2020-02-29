@@ -2,6 +2,15 @@ mat-card {
   margin: 20px;
 }
 
+.is-typing {
+  min-height: 20px;
+  padding: 5px;
+
+  span {
+    padding: 0;
+  }
+}
+
 .title {
   text-align: center;
 }

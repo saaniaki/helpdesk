@@ -1,5 +1,5 @@
 import {Injectable, Injector} from '@angular/core';
-import {AuthService} from './auth.service';
+import {AuthService, User} from './auth.service';
 import {Socket} from 'ngx-socket-io';
 
 @Injectable({
@@ -11,8 +11,8 @@ export class WebsocketService {
   private listeners: { [key: string]: (data: any) => void } = {};
 
   constructor(private authService: AuthService, private injector: Injector) {
-    this.authService.authenticated.subscribe(isAuthenticated => {
-      if (isAuthenticated) {
+    this.authService.user.subscribe((user: User) => {
+      if (user !== null && user.username !== null) {
         if (this.socket === undefined) {
           this.socket = injector.get<Socket>(Socket);
           this.socket.on('connect', () => {
@@ -27,7 +27,7 @@ export class WebsocketService {
         } else {
           this.socket.connect();
         }
-      } else {
+      } else if (this.socket !== null && this.socket !== undefined) {
         this.socket.disconnect();
       }
     });

@@ -1,17 +1,38 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 import * as jwt_decode from 'jwt-decode';
+
+export interface User {
+  username: string;
+  socketID: string | null;
+  firstName: string;
+  lastName: string;
+  isClient: boolean;
+  conversation: Conversation | null;
+}
+
+export interface Conversation {
+  userA: User;
+  userB: User;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService implements CanActivate {
 
-  private authenticated$ = new Subject<boolean>();
+  private user$ = new BehaviorSubject<User>({
+    username: null,
+    socketID: null,
+    firstName: null,
+    lastName: null,
+    isClient: false,
+    conversation: null
+  });
   private isAuthenticated = false;
   private token;
 
@@ -20,23 +41,20 @@ export class AuthService implements CanActivate {
               private snackBar: MatSnackBar) {
   }
 
-  get authenticated(): Subject<boolean> {
-    return this.authenticated$;
+  get user(): Subject<User> {
+    return this.user$;
   }
 
   get JWT() {
     return this.token;
   }
 
-  get decodedJWT() {
-    return jwt_decode(this.token);
-  }
-
   loginAsClient(firstName: string, lastName: string) {
-    this.httpClient.post(environment.serverURL + '/login/client', {firstName, lastName}).subscribe((response: { token: string }) => {
+    this.httpClient.post(environment.serverURL + '/login/client',
+      {firstName, lastName}).subscribe((response: { token: string }) => {
       this.token = response.token;
       this.isAuthenticated = true;
-      this.authenticated$.next(true);
+      this.user$.next(jwt_decode(this.token));
       this.router.navigate(['']);
       this.openSnackBar('Welcome to help desk!');
     }, (error) => {
@@ -45,11 +63,11 @@ export class AuthService implements CanActivate {
   }
 
   loginAsHelper(username: string, password: string) {
-    this.httpClient.post(environment.serverURL + '/login/help-desk', {username, password})
-      .subscribe((response: { token: string }) => {
+    this.httpClient.post(environment.serverURL + '/login/help-desk',
+      {username, password}).subscribe((response: { token: string }) => {
         this.token = response.token;
         this.isAuthenticated = true;
-        this.authenticated$.next(true);
+        this.user$.next(jwt_decode(this.token));
         this.router.navigate(['']);
         this.openSnackBar('Welcome to help desk!');
       }, (error) => {
@@ -59,7 +77,7 @@ export class AuthService implements CanActivate {
 
   logout() {
     this.isAuthenticated = false;
-    this.authenticated$.next(false);
+    this.user$.next(null);
     this.router.navigate(['login']);
     this.openSnackBar('Have a great one buddy ;)');
   }

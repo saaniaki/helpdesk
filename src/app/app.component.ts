@@ -9,7 +9,10 @@ import {AuthService} from './services/auth.service';
 })
 export class AppComponent {
 
-  constructor(private chatService: ChatService, public authService: AuthService) {
+  constructor(
+    private chatService: ChatService, // This is needed so Angular initialises WebSocket
+    public authService: AuthService
+  ) {
   }
 
 }

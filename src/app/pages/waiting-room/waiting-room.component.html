@@ -1,0 +1,56 @@
+<mat-card>
+  <mat-card-content>
+
+    <div class="title">
+      <h1> Hello, {{user.firstName}} {{user.lastName}}, welcome to Help Desk 4481! </h1>
+    </div>
+
+    <div *ngIf="!user.isClient">
+      <h2>Online Clients: {{status.numberOfClientsOnline}}</h2>
+      <h2>Clients In Queue: {{status.numberOfClientsInQueue}}</h2>
+      <h2>Online Helpers: {{status.helpers.length}}</h2>
+
+      <ul>
+        <li *ngFor="let helperUsername of status.helpers">
+          {{helperUsername}}
+        </li>
+      </ul>
+
+      <div *ngIf="status.numberOfClientsInQueue > 0">
+        <div class="title">
+          <h1>Clients are waiting for you, please help them!</h1>
+        </div>
+        <div class="action-container">
+          <button (click)="chatService.pickClient()"
+                  mat-button mat-raised-button color="primary">
+            Pick a Client!
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!--    <div class="title">-->
+    <!--      <h1 *ngIf="userInConvo === null && !(chatService.canRequestToJoinQueue | async)">Please wait {{authService.decodedJWT.firstName}}, you are in queue!</h1>-->
+    <!--    </div>-->
+
+    <div *ngIf="user.isClient && !isInQueue">
+      <div class="title">
+        <h1>If you're ready to get help, please join the queue.</h1>
+      </div>
+      <div class="action-container">
+        <button (click)="queueMe()"
+                mat-button mat-raised-button color="primary">
+          Queue Me!
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="user.isClient && isInQueue">
+      <div class="title">
+        <h1>Please wait, we will be with you shortly.</h1>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

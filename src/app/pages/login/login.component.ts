@@ -30,8 +30,4 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  login() {
-    console.log('a');
-  }
-
 }

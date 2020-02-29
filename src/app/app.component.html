@@ -1,7 +1,10 @@
 <mat-toolbar color="primary">
   <span>Help Desk</span>
   <span class="fill-remaining-space"></span>
-  <button *ngIf="authService.authenticated | async" (click)="authService.logout()" mat-button mat-raised-button>Logout
+  <button *ngIf="(authService.user | async) !== null"
+          (click)="authService.logout()"
+          mat-button mat-raised-button>
+    Logout
   </button>
 </mat-toolbar>
 <div class="container">

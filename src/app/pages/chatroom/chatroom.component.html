@@ -1,29 +1,23 @@
 <mat-card>
   <mat-card-content>
 
-    <div class="title">
-      <h1 *ngIf="userInConvo === null && !(chatService.canRequestToJoinQueue | async)">Please wait {{authService.decodedJWT.firstName}}, you are in queue!</h1>
-    </div>
-
-    <div *ngIf="userInConvo === null && (chatService.canRequestToJoinQueue | async)">
+    <div *ngIf="matchedUser !== null">
       <div class="title">
-        <h1>Your party has left the chat, you can join the queue again if you wish!</h1>
-      </div>
-      <div class="action-container">
-        <button (click)="chatService.joinQueue()" mat-button mat-raised-button color="primary">Join Queue</button>
-      </div>
-    </div>
-
-    <div *ngIf="userInConvo !== null">
-      <div class="title">
-        <h1 *ngIf="userInConvo !== null">Connected to {{userInConvo.firstName}} {{userInConvo.lastName}}</h1>
-        <h3 *ngIf="userInConvo.isClient">Client ID: {{userInConvo.username}}</h3>
+        <h1>Connected to {{matchedUser.firstName}} {{matchedUser.lastName}}</h1>
+        <h3 *ngIf="matchedUser.isClient">Client ID: {{matchedUser.username}}</h3>
       </div>
 
       <div class="chat-history">
         <div>
           <mat-chip-list *ngFor="let data of chatService.messages" [ngClass]="{'is-me': data.isMe}">
-            <mat-chip [color]="data.isMe ? 'primary' : 'accent'" selected>{{data.message}} <span>{{data.timestamp | date:'shortTime'}}</span></mat-chip>
+            <mat-chip [color]="data.isMe ? 'primary' : 'accent'" selected>
+              {{data.text}} <span>{{data.timestamp | date:'shortTime'}}</span>
+            </mat-chip>
+          </mat-chip-list>
+          <mat-chip-list *ngIf="chatService.isPartyTyping | async">
+            <mat-chip class="is-typing">
+              <span>{{matchedUser.firstName}} is typing...</span>
+            </mat-chip>
           </mat-chip-list>
         </div>
       </div>
@@ -31,11 +25,14 @@
       <mat-form-field>
         <mat-label>Message</mat-label>
         <input matInput placeholder="Start typing..." [formControl]="messageControl"
-               (keyup.enter)="chatService.send(messageControl.value); messageControl.reset()">
+               (keyup.enter)="chatService.send(messageControl.value); messageControl.reset()"
+               (keydown)="chatService.isTyping()"
+               (keyup)="chatService.stoppedTyping()">
       </mat-form-field>
 
       <div class="action-container">
         <button (click)="chatService.send(messageControl.value)" mat-button mat-raised-button color="primary">Send</button>
+        <button (click)="chatService.leave()" mat-button mat-raised-button color="primary">Leave</button>
       </div>
     </div>
 
