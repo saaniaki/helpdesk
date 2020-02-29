@@ -12,15 +12,18 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from './pages/login/login.component';
 import { ChatroomComponent } from './pages/chatroom/chatroom.component';
 import {
+  MatBadgeModule,
+  MatBottomSheetModule,
   MatButtonModule,
   MatCardModule,
   MatChipsModule,
   MatFormFieldModule,
   MatGridListModule,
-  MatInputModule, MatSnackBarModule,
+  MatInputModule, MatListModule, MatSnackBarModule,
   MatToolbarModule
 } from '@angular/material';
 import { WaitingRoomComponent } from './pages/waiting-room/waiting-room.component';
+import { HelpersListComponent } from './components/helpers-list/helpers-list.component';
 
 const config: SocketIoConfig = { url: environment.serverURL, options: {} };
 
@@ -30,6 +33,7 @@ const config: SocketIoConfig = { url: environment.serverURL, options: {} };
     LoginComponent,
     ChatroomComponent,
     WaitingRoomComponent,
+    HelpersListComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +49,13 @@ const config: SocketIoConfig = { url: environment.serverURL, options: {} };
     MatFormFieldModule,
     MatGridListModule,
     MatChipsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatBottomSheetModule,
+    MatListModule,
+    MatBadgeModule
+  ],
+  entryComponents: [
+    HelpersListComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

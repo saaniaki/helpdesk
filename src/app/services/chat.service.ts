@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {WebsocketService} from './websocket.service';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {AuthService, User} from './auth.service';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 export interface Status {
-  helpers: string[];
+  helpers: User[];
   numberOfClientsOnline: number;
   numberOfClientsInQueue: number;
 }
@@ -28,7 +28,7 @@ export class ChatService {
     firstName: null,
     lastName: null,
     isClient: false,
-    conversation: null
+    isInConvo: null
   });
   private roomStatus$ = new BehaviorSubject<Status>({
     helpers: [],
@@ -50,6 +50,7 @@ export class ChatService {
       }
     });
     this.websocketService.addListener('roomStatus', data => {
+      console.log(data);
       this.roomStatus$.next(data);
     });
     this.websocketService.addListener('otherTyping', data => {
@@ -112,7 +113,7 @@ export class ChatService {
   }
 
   public transferClient(clientUsername: string, helperUsername: string) {
-    this.websocketService.emit('pickClient', {clientUsername, helperUsername});
+    this.websocketService.emit('transferClient', {clientUsername, helperUsername});
   }
 
 }

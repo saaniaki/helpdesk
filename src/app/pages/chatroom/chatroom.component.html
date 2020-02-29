@@ -33,6 +33,7 @@
       <div class="action-container">
         <button (click)="chatService.send(messageControl.value)" mat-button mat-raised-button color="primary">Send</button>
         <button (click)="chatService.leave()" mat-button mat-raised-button color="primary">Leave</button>
+        <button *ngIf="!user.isClient" (click)="openFreeHelpersSheet()" mat-button mat-raised-button color="primary">Transfer</button>
       </div>
     </div>
 

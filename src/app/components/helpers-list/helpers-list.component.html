@@ -1,0 +1,11 @@
+<mat-nav-list>
+
+  <div *ngFor="let helper of data.helpers">
+    <a *ngIf="!helper.isInConvo && helper.username != data.currentUserName"
+       (click)="pickHelper($event, helper.username)" mat-list-item>
+      <h1 mat-line>{{helper.username}}</h1>
+      <span mat-line>{{helper.firstName}} {{helper.lastName}}</span>
+    </a>
+  </div>
+
+</mat-nav-list>

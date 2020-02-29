@@ -12,12 +12,7 @@ export interface User {
   firstName: string;
   lastName: string;
   isClient: boolean;
-  conversation: Conversation | null;
-}
-
-export interface Conversation {
-  userA: User;
-  userB: User;
+  isInConvo: boolean | null;
 }
 
 @Injectable({
@@ -31,7 +26,7 @@ export class AuthService implements CanActivate {
     firstName: null,
     lastName: null,
     isClient: false,
-    conversation: null
+    isInConvo: null
   });
   private isAuthenticated = false;
   private token;
@@ -39,6 +34,8 @@ export class AuthService implements CanActivate {
   constructor(private httpClient: HttpClient,
               private router: Router,
               private snackBar: MatSnackBar) {
+    this.token = sessionStorage.getItem('token');
+    if (this.token != null) { this.login(); }
   }
 
   get user(): Subject<User> {
@@ -53,10 +50,8 @@ export class AuthService implements CanActivate {
     this.httpClient.post(environment.serverURL + '/login/client',
       {firstName, lastName}).subscribe((response: { token: string }) => {
       this.token = response.token;
-      this.isAuthenticated = true;
-      this.user$.next(jwt_decode(this.token));
-      this.router.navigate(['']);
-      this.openSnackBar('Welcome to help desk!');
+      sessionStorage.setItem('token', this.token);
+      this.login();
     }, (error) => {
       this.openSnackBar('Could not log in, please report this!');
     });
@@ -65,18 +60,25 @@ export class AuthService implements CanActivate {
   loginAsHelper(username: string, password: string) {
     this.httpClient.post(environment.serverURL + '/login/help-desk',
       {username, password}).subscribe((response: { token: string }) => {
-        this.token = response.token;
-        this.isAuthenticated = true;
-        this.user$.next(jwt_decode(this.token));
-        this.router.navigate(['']);
-        this.openSnackBar('Welcome to help desk!');
-      }, (error) => {
-        this.openSnackBar('Username or password is wrong.');
-      });
+      this.token = response.token;
+      sessionStorage.setItem('token', this.token);
+      this.login();
+    }, (error) => {
+      this.openSnackBar('Username or password is wrong.');
+    });
+  }
+
+  private login() {
+    this.isAuthenticated = true;
+    this.user$.next(jwt_decode(this.token));
+    this.router.navigate(['']);
+    this.openSnackBar('Welcome to help desk!');
   }
 
   logout() {
     this.isAuthenticated = false;
+    this.token = null;
+    sessionStorage.clear();
     this.user$.next(null);
     this.router.navigate(['login']);
     this.openSnackBar('Have a great one buddy ;)');
