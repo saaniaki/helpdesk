@@ -1,5 +1,8 @@
 <mat-toolbar color="primary">
   <span>Help Desk</span>
+  <a href="http://130.63.95.38/project5/upload.html">
+    <button mat-button mat-raised-button>Upload a File</button>
+  </a>
   <span class="fill-remaining-space"></span>
   <button *ngIf="(authService.user | async) !== null"
           (click)="authService.logout()"
